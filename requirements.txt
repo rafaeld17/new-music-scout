@@ -1,19 +1,20 @@
 # Web Framework
-fastapi==0.104.1
-uvicorn[standard]==0.24.0
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
 
 # Database
-sqlmodel==0.0.14
+sqlmodel==0.0.22
 alembic==1.13.1
 
 # RSS and Web Scraping
-feedparser==6.0.10
-requests==2.31.0
-beautifulsoup4==4.12.2
+feedparser==6.0.11
+requests==2.32.3
+beautifulsoup4==4.12.3
 
 # Data Processing
-pydantic==2.5.2
-python-dateutil==2.8.2
+pydantic==2.9.2
+pydantic-core==2.23.4
+python-dateutil==2.9.0
 
 # Configuration
 python-dotenv==1.0.0

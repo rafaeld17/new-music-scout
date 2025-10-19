@@ -24,34 +24,6 @@ export default function AlbumCard({ album }: AlbumCardProps) {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
-  const getExcerpt = (content: string, maxLength: number = 200) => {
-    if (!content) return '';
-
-    // Strip HTML tags
-    const text = content.replace(/<[^>]+>/g, '');
-
-    // Decode HTML entities
-    const decoded = text
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/&#8211;/g, '–')
-      .replace(/&#8217;/g, "'")
-      .replace(/&rsquo;/g, "'");
-
-    // Trim and truncate
-    const trimmed = decoded.trim();
-    if (trimmed.length <= maxLength) return trimmed;
-
-    // Find the last space before maxLength to avoid cutting words
-    const truncated = trimmed.substring(0, maxLength);
-    const lastSpace = truncated.lastIndexOf(' ');
-
-    return (lastSpace > 0 ? truncated.substring(0, lastSpace) : truncated) + '...';
-  };
-
   const handleCardClick = () => {
     const encodedArtist = encodeURIComponent(album.artist);
     const encodedAlbum = encodeURIComponent(album.album);

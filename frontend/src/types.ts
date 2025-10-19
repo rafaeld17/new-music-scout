@@ -58,3 +58,7 @@ export interface SinglesResponse {
   limit: number;
   offset: number;
 }
+
+// Aliases for backward compatibility
+export type AlbumAggregate = Album;
+export type ReviewItem = Review;
