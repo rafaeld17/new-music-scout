@@ -1,0 +1,298 @@
+.singles-header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.singles-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.singles-count {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.singles-list {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.single-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+.single-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #8b5cf6;
+}
+
+.single-main {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.single-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.single-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.artist-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.content-type-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.album-name {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+.tracks-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border-left: 3px solid #8b5cf6;
+}
+
+.tracks-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.track-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.track-name {
+  font-size: 16px;
+  color: #2d3748;
+  font-weight: 500;
+  padding-left: 16px;
+  position: relative;
+}
+
+.track-name::before {
+  content: "♪";
+  position: absolute;
+  left: 0;
+  color: #8b5cf6;
+  font-size: 14px;
+}
+
+.genre-tags-small {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.genre-tag-small {
+  padding: 4px 10px;
+  background: #edf2f7;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #4a5568;
+}
+
+.single-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.source-badge {
+  padding: 4px 10px;
+  background: #edf2f7;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.date-text {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.single-cover {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.single-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.read-more-link {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #8b5cf6;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.read-more-link:hover {
+  background: #7c3aed;
+}
+
+.singles-loading,
+.singles-error,
+.singles-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.singles-loading {
+  gap: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #8b5cf6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.singles-loading p {
+  color: #666;
+  font-size: 16px;
+  margin: 0;
+}
+
+.singles-error {
+  color: #dc2626;
+}
+
+.singles-error h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+}
+
+.singles-error p {
+  margin: 0;
+  color: #666;
+}
+
+.singles-empty {
+  color: #666;
+  font-size: 16px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  background-color: white;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: #f9fafb;
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .single-main {
+    grid-template-columns: 1fr;
+  }
+
+  .single-cover {
+    width: 100%;
+    height: 200px;
+  }
+
+  .singles-list {
+    padding: 16px;
+    gap: 16px;
+  }
+}

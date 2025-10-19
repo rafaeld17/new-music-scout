@@ -1,0 +1,33 @@
+# Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# Database
+sqlmodel==0.0.14
+psycopg2-binary==2.9.9
+alembic==1.13.1
+
+# RSS and Web Scraping
+feedparser==6.0.10
+requests==2.31.0
+beautifulsoup4==4.12.2
+
+# Background Processing
+celery==5.3.4
+redis==5.0.1
+schedule==1.2.0
+
+# Data Processing
+pydantic==2.5.2
+python-dateutil==2.8.2
+
+# Development and Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+
+# Configuration
+python-dotenv==1.0.0
