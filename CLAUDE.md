@@ -123,16 +123,20 @@ pytest --cov=src/music_scout              # With coverage
 docker build -t music-scout-backend .
 docker build -t music-scout-frontend ./frontend
 
-# Deploy to Render.com (see DEPLOY.md for full guide)
+# Deploy to Railway.app (see DEPLOY_RAILWAY.md for full guide)
 # 1. Push to GitHub
 git add . && git commit -m "feat: deployment configuration"
 git push origin main
 
-# 2. Follow DEPLOY.md step-by-step guide
-# - Create Render account
-# - Deploy backend, frontend, cron job
-# - Set environment variables
-# - Run initial data seed
+# 2. Follow DEPLOY_RAILWAY.md step-by-step guide
+# - Create Railway account (free $5/month credit)
+# - Deploy backend with persistent volume
+# - Deploy frontend
+# - Set up cron job for daily ingestion
+# - Seed initial data
+
+# Alternative: Render.com (requires $7/mo paid plan)
+# See DEPLOY.md for Render deployment (deprecated free tier)
 ```
 
 ---
@@ -179,12 +183,14 @@ git push origin main
 
 - `new-music-scout-spec.md` - Complete technical specification
 - `todo.md` - Official project todo list
-- `DEPLOY.md` - Production deployment guide (Render.com)
+- `DEPLOY_RAILWAY.md` - **Production deployment guide (Railway.app - RECOMMENDED)**
+- `DEPLOY.md` - Alternative deployment guide (Render.com - requires paid plan)
 - `.env.example` - Environment variable template
 - `requirements.txt` - Python dependencies
 - `Dockerfile` - Backend container configuration
 - `frontend/Dockerfile` - Frontend container configuration
-- `render.yaml` - Render.com deployment configuration
+- `railway.json` - Railway.app deployment configuration
+- `render.yaml` - Render.com deployment configuration (deprecated free tier)
 
 ---
 
