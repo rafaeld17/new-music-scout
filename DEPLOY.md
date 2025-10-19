@@ -1,27 +1,51 @@
 # Deployment Guide - New Music Scout
 
+**UPDATED:** Render.com no longer supports persistent disks or cron jobs on free tier.
+
+**👉 USE `DEPLOY_RAILWAY.md` FOR FREE DEPLOYMENT** 👈
+
+This file is kept for reference, but **Railway.app is now the recommended platform**.
+
+---
+
+## Why Railway Instead of Render?
+
+| Feature | Railway (Recommended) | Render Free |
+|---------|----------------------|-------------|
+| Persistent Volumes | ✅ 500MB free | ❌ Not available |
+| Cron Jobs | ✅ Included | ❌ Not on free tier |
+| Cost | $5 free credit/mo | $0 but limited |
+| SQLite Support | ✅ With volumes | ❌ Ephemeral only |
+
+**See `DEPLOY_RAILWAY.md` for step-by-step Railway deployment.**
+
+---
+
+# Original Render.com Guide (DEPRECATED)
+
 Complete guide for deploying New Music Scout to Render.com with SQLite database.
 
 **Last Updated:** 2025-10-19
+**Status:** ⚠️ Requires paid plan ($7/mo) for persistent disks
 
 ---
 
 ## Overview
 
-This guide covers deploying New Music Scout as a production web application accessible from anywhere.
+This guide covers deploying New Music Scout as a production web application accessible from anywhere using Render.com **Starter plan** ($7/month).
 
 **Architecture:**
 - **Backend:** FastAPI (Python 3.13) with SQLite on persistent disk
 - **Frontend:** React 19 static site served via nginx
-- **Database:** SQLite file on 1GB persistent volume (free tier)
-- **Scheduler:** Cron job for daily album ingestion
-- **Platform:** Render.com (100% free tier)
+- **Database:** SQLite file on persistent disk (requires paid plan)
+- **Scheduler:** GitHub Actions for daily ingestion (free alternative to Render cron)
+- **Platform:** Render.com
 
 **What You'll Get:**
 - Public HTTPS URLs for frontend and backend
 - Automatic daily ingestion at 3 AM UTC
 - Mobile-accessible from anywhere
-- Zero monthly cost
+- **Cost:** $7/month for backend Starter plan (frontend still free)
 
 ---
 
