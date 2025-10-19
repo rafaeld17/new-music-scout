@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     api_host: str = "0.0.0.0"
     api_port: int = 8000
     debug: bool = True
+    allowed_origins: str = ""  # Comma-separated list of allowed origins for CORS
 
     # External APIs
     musicbrainz_api_url: str = "https://musicbrainz.org/ws/2"

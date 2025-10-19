@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code when working with code in this repository.
 
-**Last Updated:** 2025-10-18
+**Last Updated:** 2025-10-19
 
 ---
 
@@ -53,9 +53,9 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 **New Music Scout** - Personal music discovery tool for prog/rock/metal genres.
 
-**Current Phase:** Phase 3.5 - Database Rebuild + Spotify Metadata Integration
+**Current Phase:** Phase 3.6 - Production-Ready Web App (Deployment infrastructure complete!)
 
-**Status:** Focusing on 8 curated sources with rich Spotify metadata enrichment.
+**Status:** Ready to deploy to Render.com with SQLite on persistent disk. 100% free tier.
 
 ### Core Architecture
 
@@ -117,6 +117,24 @@ pytest tests/unit/test_metadata_fetcher.py  # Specific file
 pytest --cov=src/music_scout              # With coverage
 ```
 
+### Deployment (NEW - Phase 3.6)
+```bash
+# Local Docker testing (requires Docker Desktop)
+docker build -t music-scout-backend .
+docker build -t music-scout-frontend ./frontend
+
+# Deploy to Render.com (see DEPLOY.md for full guide)
+# 1. Push to GitHub
+git add . && git commit -m "feat: deployment configuration"
+git push origin main
+
+# 2. Follow DEPLOY.md step-by-step guide
+# - Create Render account
+# - Deploy backend, frontend, cron job
+# - Set environment variables
+# - Run initial data seed
+```
+
 ---
 
 ## Development Best Practices
@@ -161,8 +179,12 @@ pytest --cov=src/music_scout              # With coverage
 
 - `new-music-scout-spec.md` - Complete technical specification
 - `todo.md` - Official project todo list
+- `DEPLOY.md` - Production deployment guide (Render.com)
 - `.env.example` - Environment variable template
 - `requirements.txt` - Python dependencies
+- `Dockerfile` - Backend container configuration
+- `frontend/Dockerfile` - Frontend container configuration
+- `render.yaml` - Render.com deployment configuration
 
 ---
 

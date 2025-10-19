@@ -1,0 +1,72 @@
+services:
+  # FastAPI Backend
+  - type: web
+    name: music-scout-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////data/music_scout.db
+      - key: API_HOST
+        value: 0.0.0.0
+      - key: API_PORT
+        value: 8000
+      - key: DEBUG
+        value: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: SPOTIFY_CLIENT_ID
+        sync: false  # Set this in Render dashboard
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false  # Set this in Render dashboard
+      - key: ALLOWED_ORIGINS
+        fromService:
+          type: web
+          name: music-scout-frontend
+          property: host
+    disk:
+      name: music-scout-data
+      mountPath: /data
+      sizeGB: 1  # Free tier includes 1GB
+
+  # React Frontend (Static Site)
+  - type: web
+    name: music-scout-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: music-scout-api
+          property: host
+
+  # Scheduled Ingestion Worker (Cron Job)
+  - type: cron
+    name: music-scout-ingestion
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
+    schedule: "0 3 * * *"  # Daily at 3 AM UTC
+    dockerCommand: python -m src.music_scout.cli.ingest ingest
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////data/music_scout.db
+      - key: SPOTIFY_CLIENT_ID
+        sync: false
+      - key: SPOTIFY_CLIENT_SECRET
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
+    disk:
+      name: music-scout-data
+      mountPath: /data
+      sizeGB: 1

@@ -4,7 +4,10 @@
 
 import type { AlbumAggregate, ReviewItem } from './types';
 
-const API_BASE = '/api';
+// In development, use proxy. In production, use environment variable.
+const API_BASE = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
 
 export async function fetchRecentAlbums(days = 30, limit = 20): Promise<AlbumAggregate[]> {
   const response = await fetch(`${API_BASE}/albums/recent?days=${days}&limit=${limit}`);

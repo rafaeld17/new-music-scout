@@ -38,7 +38,8 @@
       "Bash(del:*)",
       "WebFetch(domain:www.metalsucks.net)",
       "WebFetch(domain:rockandbluesmuse.com)",
-      "WebFetch(domain:metalstorm.net)"
+      "WebFetch(domain:metalstorm.net)",
+      "Bash(docker build -t music-scout-backend -f Dockerfile .)"
     ],
     "deny": [],
     "ask": []

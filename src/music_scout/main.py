@@ -19,9 +19,14 @@ app = FastAPI(
 )
 
 # Add CORS middleware
+# In production, use ALLOWED_ORIGINS env var. In debug mode, allow all.
+allowed_origins = (
+    ["*"] if settings.debug
+    else [origin.strip() for origin in settings.allowed_origins.split(",") if origin.strip()]
+)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if settings.debug else [],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
