@@ -49,5 +49,8 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
 
 # Run database migrations on startup, then start the server
 # Use $PORT if set (Railway), otherwise default to 8000 (Render/local)
-CMD alembic upgrade head && \
-    uvicorn src.music_scout.main:app --host 0.0.0.0 --port ${PORT:-8000}
+CMD set -e && \
+    echo "Running migrations..." && \
+    alembic upgrade head && \
+    echo "Starting uvicorn..." && \
+    uvicorn src.music_scout.main:app --host 0.0.0.0 --port ${PORT:-8000} --log-level info 2>&1
