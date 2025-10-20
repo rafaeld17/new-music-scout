@@ -36,7 +36,7 @@ def list_sources(session: Session = Depends(get_session)) -> List[dict]:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/sources/create-defaults")
+@router.get("/sources/create-defaults")
 def create_default_sources(session: Session = Depends(get_session)) -> dict:
     """Create default sources if they don't exist."""
     try:
@@ -59,7 +59,7 @@ def create_default_sources(session: Session = Depends(get_session)) -> dict:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/ingest")
+@router.get("/ingest")
 def trigger_ingestion(
     source_id: Optional[int] = None,
     source_name: Optional[str] = None,
