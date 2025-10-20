@@ -52,15 +52,18 @@ RUN echo "Verifying nginx html directory:" && \
     (test -f /usr/share/nginx/html/index.html && echo "✓ index.html found" || echo "✗ index.html MISSING!") && \
     (test -d /usr/share/nginx/html/assets && echo "✓ assets folder found" || echo "✗ assets folder MISSING!")
 
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx configuration template
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
-# Expose port 80
-EXPOSE 80
+# Railway uses $PORT environment variable, default to 80 for local
+ENV PORT=80
 
-# Health check
+# Expose port
+EXPOSE $PORT
+
+# Health check - use $PORT
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
+    CMD wget --quiet --tries=1 --spider http://localhost:${PORT}/ || exit 1
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start nginx with envsubst to replace $PORT in config
+CMD /bin/sh -c "envsubst '\$PORT' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
