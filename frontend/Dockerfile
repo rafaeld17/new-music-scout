@@ -17,8 +17,14 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Debug: Show environment variable
+RUN echo "Building with VITE_API_URL=$VITE_API_URL"
+
 # Build the app with environment variable
 RUN npm run build
+
+# Debug: Show what was built
+RUN ls -la dist/
 
 # Production stage with nginx
 FROM nginx:alpine
