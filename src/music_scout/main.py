@@ -38,14 +38,25 @@ app.include_router(content.router, prefix="/api", tags=["content"])
 app.include_router(reviews.router, prefix="/api", tags=["reviews"])
 
 
+@app.get("/")
+async def root():
+    """Root endpoint for basic connectivity test."""
+    return {"message": "New Music Scout API", "status": "running"}
+
+
 @app.on_event("startup")
 async def startup_event():
     """Initialize application on startup."""
-    logger.info("Starting New Music Scout application")
+    try:
+        logger.info("Starting New Music Scout application")
 
-    # Create database tables
-    create_db_and_tables()
-    logger.info("Database tables created/verified")
+        # Create database tables (if they don't exist)
+        create_db_and_tables()
+        logger.info("Database tables created/verified")
+        logger.info("Application startup complete!")
+    except Exception as e:
+        logger.error(f"Startup failed: {e}", exc_info=True)
+        raise
 
 
 @app.on_event("shutdown")
