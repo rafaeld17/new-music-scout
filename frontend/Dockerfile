@@ -44,8 +44,13 @@ FROM nginx:alpine
 # Copy built files from builder
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Debug: List files to verify build output
-RUN ls -la /usr/share/nginx/html
+# Debug: List files to verify build output (force rebuild with date comment)
+# Build date: 2025-10-20T17:15:00Z
+RUN echo "Verifying nginx html directory:" && \
+    ls -la /usr/share/nginx/html && \
+    echo "Checking for critical files:" && \
+    (test -f /usr/share/nginx/html/index.html && echo "✓ index.html found" || echo "✗ index.html MISSING!") && \
+    (test -d /usr/share/nginx/html/assets && echo "✓ assets folder found" || echo "✗ assets folder MISSING!")
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
