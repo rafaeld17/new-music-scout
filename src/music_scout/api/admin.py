@@ -17,8 +17,10 @@ router = APIRouter()
 def list_sources(session: Session = Depends(get_session)) -> List[dict]:
     """List all content sources."""
     try:
-        source_manager = SourceManager(session)
-        sources = source_manager.list_sources()
+        # Get all sources from database
+        from sqlmodel import select
+        statement = select(Source)
+        sources = session.exec(statement).all()
 
         return [
             {
@@ -100,7 +102,7 @@ def trigger_ingestion(
         else:
             # Ingest from all enabled sources
             logger.info("Starting ingestion from all enabled sources")
-            sources = source_manager.list_sources(enabled_only=True)
+            sources = source_manager.get_enabled_sources()
 
             total_items = 0
             results = []
