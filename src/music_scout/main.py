@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .core.config import settings
 from .core.database import create_db_and_tables
 from .core.logging import logger
-from .api import health, content, reviews
+from .api import health, content, reviews, admin
 
 # Create FastAPI app
 app = FastAPI(
@@ -36,6 +36,7 @@ app.add_middleware(
 app.include_router(health.router, prefix="/api", tags=["health"])
 app.include_router(content.router, prefix="/api", tags=["content"])
 app.include_router(reviews.router, prefix="/api", tags=["reviews"])
+app.include_router(admin.router, prefix="/api/admin", tags=["admin"])
 
 
 @app.get("/")
