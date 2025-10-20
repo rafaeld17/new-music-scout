@@ -131,7 +131,7 @@ async def get_album_aggregate(
     return _build_aggregate_response(aggregate, session)
 
 
-@router.post("/aggregate/run")
+@router.get("/aggregate/run")
 async def run_aggregation(
     session: Session = Depends(get_session),
 ):

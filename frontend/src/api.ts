@@ -50,7 +50,7 @@ export async function fetchLatestReviews(limit = 20): Promise<ReviewItem[]> {
 }
 
 export async function triggerAggregation(): Promise<{ status: string; aggregates_created: number; message: string }> {
-  const response = await fetch(`${API_BASE}/aggregate/run`, { method: 'POST' });
+  const response = await fetch(`${API_BASE}/aggregate/run`);
   if (!response.ok) {
     throw new Error('Failed to trigger aggregation');
   }
