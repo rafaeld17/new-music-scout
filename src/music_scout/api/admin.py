@@ -109,13 +109,27 @@ def trigger_ingestion(
 
             for source in sources:
                 try:
-                    items = ingestion_service.ingest_from_source(source)
-                    total_items += len(items)
-                    results.append({
-                        "source": source.name,
-                        "items_count": len(items),
-                        "status": "success"
-                    })
+                    # Create a fresh session for each source to avoid locking issues
+                    from ..core.database import engine
+                    with Session(engine) as source_session:
+                        ingestion_service_local = IngestionService(source_session)
+                        # Refresh the source object in this session
+                        source_refreshed = source_session.get(Source, source.id)
+                        if source_refreshed:
+                            items = ingestion_service_local.ingest_from_source(source_refreshed)
+                            total_items += len(items)
+                            results.append({
+                                "source": source_refreshed.name,
+                                "items_count": len(items),
+                                "status": "success"
+                            })
+                        else:
+                            results.append({
+                                "source": source.name,
+                                "items_count": 0,
+                                "status": "error",
+                                "error": "Source not found"
+                            })
                 except Exception as e:
                     logger.error(f"Error ingesting from {source.name}: {e}", exc_info=True)
                     results.append({
