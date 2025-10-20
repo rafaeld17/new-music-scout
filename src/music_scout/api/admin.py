@@ -116,11 +116,20 @@ def trigger_ingestion(
                         # Refresh the source object in this session
                         source_refreshed = source_session.get(Source, source.id)
                         if source_refreshed:
+                            logger.info(f"Processing source: {source_refreshed.name} ({source_refreshed.url})")
                             items = ingestion_service_local.ingest_from_source(source_refreshed)
+                            logger.info(f"Got {len(items)} items from {source_refreshed.name}")
                             total_items += len(items)
+
+                            # Get more details about what happened
+                            import feedparser
+                            feed = feedparser.parse(source_refreshed.url)
+                            feed_entries = len(feed.entries) if hasattr(feed, 'entries') else 0
+
                             results.append({
                                 "source": source_refreshed.name,
                                 "items_count": len(items),
+                                "feed_entries": feed_entries,
                                 "status": "success"
                             })
                         else:
