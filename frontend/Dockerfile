@@ -17,6 +17,14 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Debug: Verify source files are copied
+RUN echo "Verifying source files..." && \
+    ls -la && \
+    echo "Contents of src/:" && \
+    ls -la src/ && \
+    echo "Checking index.html:" && \
+    test -f index.html && echo "✓ index.html found" || echo "✗ index.html missing!"
+
 # Debug: Show environment variable
 RUN echo "Building with VITE_API_URL=$VITE_API_URL"
 
@@ -24,7 +32,11 @@ RUN echo "Building with VITE_API_URL=$VITE_API_URL"
 RUN npm run build
 
 # Debug: Show what was built
-RUN ls -la dist/
+RUN echo "Build complete. Checking dist folder:" && \
+    ls -la dist/ && \
+    echo "Contents of dist/:" && \
+    (test -f dist/index.html && echo "✓ index.html found" || echo "✗ index.html missing") && \
+    (test -d dist/assets && echo "✓ assets folder found" || echo "✗ assets folder missing")
 
 # Production stage with nginx
 FROM nginx:alpine
