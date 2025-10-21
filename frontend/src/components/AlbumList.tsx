@@ -41,7 +41,7 @@ export default function AlbumList({ view }: AlbumListProps) {
       try {
         // Use the API client
         const { fetchLatestReviews } = await import('../api');
-        const reviews = await fetchLatestReviews(200);
+        const reviews = await fetchLatestReviews(100);
 
         // Convert reviews to album format (group by album title)
         const albumMap = new Map<string, Album>();
