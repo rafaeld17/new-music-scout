@@ -39,15 +39,54 @@ export default function AlbumList({ view }: AlbumListProps) {
       setError(null);
 
       try {
-        // Fetch albums from cache (metadata already populated)
-        const url = `http://127.0.0.1:8000/api/albums?limit=200&fetch_metadata=false`;
+        // Use the API client
+        const { fetchLatestReviews } = await import('../api');
+        const reviews = await fetchLatestReviews(200);
 
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch albums: ${response.statusText}`);
-        }
+        // Convert reviews to album format (group by album title)
+        const albumMap = new Map<string, Album>();
 
-        const data: AlbumsResponse = await response.json();
+        reviews.forEach(review => {
+          const key = `${review.title}`;
+          if (!albumMap.has(key)) {
+            albumMap.set(key, {
+              id: review.id,
+              artist: review.title.split(' – ')[0] || review.title.split(' - ')[0] || 'Unknown Artist',
+              album: review.title.split(' – ')[1] || review.title.split(' - ')[1] || review.title,
+              release_year: new Date(review.published_date).getFullYear(),
+              genres: [],
+              tracks: [],
+              reviews: [],
+              spotify_id: null,
+              spotify_url: null,
+              album_art_url: null,
+              musicbrainz_id: null
+            });
+          }
+
+          const album = albumMap.get(key)!;
+          album.reviews.push({
+            id: review.id,
+            source: {
+              id: 0,
+              name: review.source_name,
+              weight: 1.0
+            },
+            url: review.url,
+            title: review.title,
+            author: review.author || 'Unknown',
+            published_date: review.published_date,
+            score: review.review_score,
+            score_display: review.review_score_raw || null
+          });
+        });
+
+        const data: AlbumsResponse = {
+          items: Array.from(albumMap.values()),
+          total: albumMap.size,
+          page: 1,
+          per_page: 200
+        };
 
         // Parse genres from JSON strings to arrays
         const parsedItems = data.items.map(album => ({
