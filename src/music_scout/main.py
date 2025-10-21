@@ -19,11 +19,19 @@ app = FastAPI(
 )
 
 # Add CORS middleware
-# In production, use ALLOWED_ORIGINS env var. In debug mode, allow all.
-allowed_origins = (
-    ["*"] if settings.debug
-    else [origin.strip() for origin in settings.allowed_origins.split(",") if origin.strip()]
-)
+# In production, use ALLOWED_ORIGINS env var + localhost for development
+if settings.debug:
+    allowed_origins = ["*"]
+else:
+    # Parse allowed origins from env var
+    configured_origins = [origin.strip() for origin in settings.allowed_origins.split(",") if origin.strip()]
+    # Always allow localhost for development/testing
+    allowed_origins = configured_origins + [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:3000"
+    ]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
