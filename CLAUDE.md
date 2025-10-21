@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code when working with code in this repository.
 
-**Last Updated:** 2025-10-19
+**Last Updated:** 2025-10-21
 
 ---
 
@@ -143,6 +143,45 @@ git push origin main
 
 ## Development Best Practices
 
+### ⚠️ CRITICAL: Test Before Commit Workflow
+
+**ALWAYS follow this workflow before committing any code changes:**
+
+1. **Backend Changes:**
+   ```bash
+   # Test locally first
+   python -m src.music_scout.main  # Start backend
+   # Test the endpoint manually or with curl
+   ```
+
+2. **Frontend Changes:**
+   ```bash
+   # ALWAYS build locally before committing
+   cd frontend
+   npm run build  # Must pass without errors
+   npm run dev    # Test functionality in browser at http://localhost:5173
+   ```
+
+3. **Full Stack Changes:**
+   ```bash
+   # Test both backend and frontend together locally
+   # Backend: python -m src.music_scout.main
+   # Frontend: cd frontend && npm run dev
+   # Verify the full flow works end-to-end
+   ```
+
+4. **Only After Local Testing Passes:**
+   ```bash
+   git add .
+   git commit -m "descriptive message"
+   git push origin main
+   ```
+
+**NEVER commit code that hasn't been tested locally first!**
+- Failed deployments waste time and Railway build minutes
+- TypeScript errors should be caught with `npm run build`
+- Runtime errors should be caught with `npm run dev` + manual testing
+
 ### Code Quality
 - Follow PEP 8 for Python style
 - Use type hints throughout
@@ -158,6 +197,7 @@ git push origin main
 - Test edge cases (malformed feeds, missing data)
 
 ### Git Workflow
+- **TEST LOCALLY FIRST** (see critical workflow above)
 - Atomic commits (one logical change per commit)
 - Conventional commit messages:
   - `feat: add Spotify metadata enrichment`
