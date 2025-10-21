@@ -25,6 +25,12 @@ if settings.debug:
 else:
     # Parse allowed origins from env var
     configured_origins = [origin.strip() for origin in settings.allowed_origins.split(",") if origin.strip()]
+
+    # If no origins configured, default to Railway frontend domain
+    if not configured_origins:
+        logger.warning("ALLOWED_ORIGINS not set, using default Railway domain")
+        configured_origins = ["https://music-scout-frontend-production.up.railway.app"]
+
     # Always allow localhost for development/testing
     allowed_origins = configured_origins + [
         "http://localhost:5173",
@@ -32,6 +38,9 @@ else:
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000"
     ]
+
+# Log CORS configuration for debugging
+logger.info(f"CORS allowed origins: {allowed_origins}")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
