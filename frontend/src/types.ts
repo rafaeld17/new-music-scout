@@ -15,8 +15,20 @@ export interface Review {
   review_score_raw: string | null;
   published_date: string;
   author: string | null;
-  content: string;
+  content?: string;
   source: Source;
+}
+
+// API response from /api/reviews/latest
+export interface ReviewItemResponse {
+  id: number;
+  source_name: string;
+  url: string;
+  title: string;
+  published_date: string;
+  author: string | null;
+  review_score: number | null;
+  review_score_raw: string | null;
 }
 
 export interface Album {
@@ -34,8 +46,6 @@ export interface Album {
 export interface AlbumsResponse {
   total: number;
   items: Album[];
-  limit: number;
-  offset: number;
 }
 
 export interface Single {

@@ -2,7 +2,7 @@
  * API client for Music Scout backend
  */
 
-import type { AlbumAggregate, ReviewItem } from './types';
+import type { AlbumAggregate, ReviewItemResponse } from './types';
 
 // In development, use proxy. In production, use environment variable.
 const API_BASE = import.meta.env.VITE_API_URL
@@ -41,7 +41,7 @@ export async function fetchAlbumById(albumId: number): Promise<AlbumAggregate> {
   return response.json();
 }
 
-export async function fetchLatestReviews(limit = 20): Promise<ReviewItem[]> {
+export async function fetchLatestReviews(limit = 20): Promise<ReviewItemResponse[]> {
   const response = await fetch(`${API_BASE}/reviews/latest?limit=${limit}`);
   if (!response.ok) {
     throw new Error('Failed to fetch latest reviews');
