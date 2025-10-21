@@ -20,19 +20,50 @@ export default function AlbumDetail() {
       setError(null);
 
       try {
-        // Fetch all albums and find the matching one
-        // TODO: In future, create dedicated endpoint for single album
-        const url = `http://127.0.0.1:8000/api/albums?limit=200&fetch_metadata=false`;
-        const response = await fetch(url);
+        // Fetch latest reviews and convert to albums, then find matching one
+        const { fetchLatestReviews } = await import('../api');
+        const reviews = await fetchLatestReviews(100);
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch album: ${response.statusText}`);
-        }
+        // Convert reviews to album format (same logic as AlbumList)
+        const albumMap = new Map<string, Album>();
 
-        const data = await response.json();
+        reviews.forEach(review => {
+          const key = `${review.title}`;
+          if (!albumMap.has(key)) {
+            albumMap.set(key, {
+              artist: review.title.split(' – ')[0] || review.title.split(' - ')[0] || 'Unknown Artist',
+              album: review.title.split(' – ')[1] || review.title.split(' - ')[1] || review.title,
+              review_count: 0,
+              first_seen: review.published_date,
+              latest_review: review.published_date,
+              genres: [],
+              tracks: [],
+              reviews: [],
+              cover_art_url: null
+            });
+          }
+
+          const albumItem = albumMap.get(key)!;
+          albumItem.review_count++;
+          albumItem.reviews.push({
+            id: review.id,
+            source: {
+              id: 0,
+              name: review.source_name
+            },
+            url: review.url,
+            title: review.title,
+            author: review.author || 'Unknown',
+            published_date: review.published_date,
+            review_score: review.review_score,
+            review_score_raw: review.review_score_raw,
+            content: ''
+          });
+        });
 
         // Find matching album
-        const matchingAlbum = data.items.find(
+        const albums = Array.from(albumMap.values());
+        const matchingAlbum = albums.find(
           (item: Album) =>
             item.artist.toLowerCase() === artist?.toLowerCase() &&
             item.album.toLowerCase() === album?.toLowerCase()
@@ -42,18 +73,7 @@ export default function AlbumDetail() {
           throw new Error('Album not found');
         }
 
-        // Parse genres and tracks from JSON strings to arrays
-        const parsedAlbum: Album = {
-          ...matchingAlbum,
-          genres: typeof matchingAlbum.genres === 'string'
-            ? (matchingAlbum.genres ? JSON.parse(matchingAlbum.genres) : [])
-            : matchingAlbum.genres || [],
-          tracks: typeof matchingAlbum.tracks === 'string'
-            ? (matchingAlbum.tracks ? JSON.parse(matchingAlbum.tracks) : [])
-            : matchingAlbum.tracks || []
-        };
-
-        setAlbumData(parsedAlbum);
+        setAlbumData(matchingAlbum);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load album');
       } finally {
